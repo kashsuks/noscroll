@@ -1,22 +1,24 @@
-let blocked = false;
-
 chrome.runtime.onMessage.addListener((msg, sender) => {
   if (msg.doomscroll) {
-    blocked = true;
+    chrome.storage.local.set({ blocked: true });
     chrome.tabs.remove(sender.tab.id);
     chrome.tabs.create({ url: "https://github.com" });
+  }
+
+  if (msg.unlock) {
+    chrome.storage.local.set({ blocked: false });
   }
 });
 
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-  if (blocked && tab.url.includes("instagram.com")) {
-    chrome.scripting.executeScript({
-      target: { tabId },
-      files: ["blocker.js"]
-    });
-  }
-});
+  if (changeInfo.status !== 'complete') return;
 
-chrome.runtime.onMessage.addListener((msg) => {
-  if (msg.unlock) blocked = false;
+  chrome.storage.local.get("blocked", data => {
+    if (data.blocked && tab.url.includes("instagram.com")) {
+      chrome.scripting.executeScript({
+        target: { tabId },
+        func: () => window.location.replace(chrome.runtime.getURL("lockscreen.html"))
+      });
+    }
+  });
 });

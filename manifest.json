@@ -13,7 +13,10 @@
       "js": ["content.js"]
     }
   ],
-  "action": {
-    "default_popup": "blocker.html"
-  }
+  "web_accessible_resources": [
+    {
+      "resources": ["lockscreen.html", "styles.css", "lockscreen.js"],
+      "matches": ["<all_urls>"]
+    }
+  ]
 }
