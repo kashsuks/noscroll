@@ -1,2 +1,2 @@
 # noscroll
-A chrome extension that forces you to code instead of doomscrolling
+Noscroll is a chrome extension that forces you to lock in and make Github commits instead of 
