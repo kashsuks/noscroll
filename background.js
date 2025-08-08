@@ -1,8 +1,11 @@
 chrome.runtime.onMessage.addListener((msg, sender) => {
   if (msg.doomscroll) {
-    chrome.storage.local.set({ blocked: true });
-    chrome.tabs.remove(sender.tab.id);
-    chrome.tabs.create({ url: "https://github.com" });
+    chrome.storage.local.get(["blocked", "blockCount"], (data) => {
+      const count = (data.blockCount || 0) + 1;
+      chrome.storage.local.set({ blocked: true, blockCount: count });
+      chrome.tabs.remove(sender.tab.id);
+      chrome.tabs.create({ url: "https://github.com" });
+    });
   }
 
   if (msg.unlock) {

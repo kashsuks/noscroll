@@ -11,3 +11,10 @@ document.getElementById("unlockBtn").onclick = () => {
     document.getElementById("status").style.color = "red";
   }
 };
+
+// block times below the unlock button
+chrome.storage.local.get("blockCount", (data) => {
+  const count = data.blockCount || 0;
+  document.getElementById("blockCount").textContent =
+    `Instagram blocked ${count} time${count !== 1 ? 's' : ''}.`;
+});
